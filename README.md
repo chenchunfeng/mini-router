@@ -168,6 +168,22 @@ app.$router.backHome({ data })
 
 当你选择不携带参数返回时，在首页你将拿不到`app.$router.params`,因为`mini-router`会把`params`软删除，如果你需要的话，你还是可以从storage里拿到它。
 
+#### 8.状态处理
+mini-router同小程序一样，提供三种状态`success`， `fail`， `complete`
+不同于小程序，mini-router使用链式调用来处理这三种状态，
+```js
+app.$router.push("mine")
+  .success(res => {
+    console.log("success: ", res)
+  })
+  .fail(err => {
+    console.log("fail: ", res)
+  })
+  .complete(_ => {
+    console.log("complete")
+  })
+```
+
 > 寄语：对于前端来说，可以说初窥门径，想要更深入一步，还是要坚持不断的学习和看源码。mini-router可以实现小程序里路由的跳转，也将成为我下一个小程序使用的路由模块，如果有不足的地方欢迎题issuse，如果有好的想法，欢迎pull request。
 
 
