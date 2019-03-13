@@ -1,0 +1,3 @@
+<!--pages/logs/logs.wxml-->
+<text>Logs: {{ logContent }}</text>
+<button bind:tap="handleNextPage">下个页面</button>

@@ -1,0 +1,6 @@
+<view>首页</view>
+<button bind:tap="handlePushLogs">跳转到Logs</button>
+<button bind:tap="handlePushLogin">跳转到Login页面</button>
+<button bind:tap="handleSwitchMine">选择到我的Tab页</button>
+<button bind:tap="handleReLaunchArticle">reLaunch 文章Tab页</button>
+<button bind:tap="handleRedirectLogin">redirect 登录页面</button>

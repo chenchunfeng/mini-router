@@ -1,0 +1,5 @@
+<!--pages/login/login.wxml-->
+<input placeholder="请输入手机号" value="{{ phoneNumber }}"></input>
+<input placeholder="请输入验证码" value="{{ verifyCode }}"></input>
+<button bind:tap="handleBackParams">返回带参数</button>
+<button bind:tap="handleBack">返回不带参数</button>

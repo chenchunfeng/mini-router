@@ -1,0 +1,4 @@
+<!--pages/next/next.wxml-->
+<text>pages/next/next.wxml</text>
+<button bind:tap="handleNextPageParams">返回到首页携带参数</button>
+<button bind:tap="handleNextPage">返回到首页不携带参数</button>
