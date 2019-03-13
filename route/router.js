@@ -1,5 +1,11 @@
 import pages from 'pages'
 
+const symbol = {
+  reLaunch: Symbol(),
+  redirect: Symbol(),
+  switchTab: Symbol(),
+}
+
 function _getPages_() {
   if (!pages) {
     return []
@@ -67,13 +73,13 @@ export default class Router {
     const [, , obj] = Array.from(arguments)
     const that = this
     let f = wx.navigateTo
-    if (obj && obj.fn === 'reLaunch') {
+    if (obj && Object.is(obj.fn, symbol.reLaunch)) {
       f = wx.reLaunch
     }
-    if (obj && obj.fn === 'redirect') {
+    if (obj && Object.is(obj.fn, symbol.redirect)) {
       f = wx.redirectTo
     }
-    if (obj && obj.fn === "switchTab") {
+    if (obj && Object.is(obj.fn, symbol.switchTab)) {
       f = wx.switchTab
     }
     f({
@@ -89,7 +95,7 @@ export default class Router {
    * @param params
    */
   reLaunch(name, params = null) {
-    return this.push(name, params, {fn: 'reLaunch'})
+    return this.push(name, params, {fn: symbol.reLaunch})
   }
 
   /**
@@ -98,7 +104,7 @@ export default class Router {
    * @param params
    */
   redirect(name, params = null) {
-    return this.push(name, params, {fn: 'redirect'})
+    return this.push(name, params, {fn: symbol.redirect})
   }
 
   /**
@@ -107,7 +113,7 @@ export default class Router {
    * @returns {*}
    */
   switchTab(name) {
-    return this.push(name, null, {fn: "switchTab"})
+    return this.push(name, null, {fn: symbol.switchTab})
   }
 
   /**
