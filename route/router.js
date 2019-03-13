@@ -101,6 +101,11 @@ export default class Router {
     return this.push(name, params, {fn: 'redirect'})
   }
 
+  /**
+   * 跳转指定的tab页
+   * @param name
+   * @returns {*}
+   */
   switchTab(name) {
     return this.push(name, null, {fn: "switchTab"})
   }
