@@ -19,6 +19,7 @@ Page({
     this.setData({
       phoneNumber
     })
+    console.log("onLoad", app.$router.currentPage)
   },
 
   handleBackParams() {

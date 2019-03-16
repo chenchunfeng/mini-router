@@ -7,7 +7,7 @@ const symbol = {
 }
 
 function _getPages_() {
-  if (!pages) {
+  if (!pages || pages.constructor !== Array) {
     return []
   }
 
@@ -27,7 +27,11 @@ export default class Router {
   constructor() {
     this.pages = _getPages_()
     this.params = null
-    this._currentPage = null
+    this.currentPage = this.pages[0]
+    if (!this.pages || !this.currentPage) {
+      throw Error(` Error [pages.js not config]`)
+      return
+    }
 
     this.callbacks = {}
 
@@ -45,6 +49,8 @@ export default class Router {
     }
   }
 
+  /******** Public ********/
+
   /**
    * 保留当前页面，跳转到应用内的某个页面。但是不能跳到 tabbar 页面
    * @param name
@@ -53,14 +59,14 @@ export default class Router {
    */
   push(name, params = null) {
 
-    const [page] = this.pages.filter(item => item.name === name)
+    const page = this.getPageFor(name)
 
     if (!page) {
       throw Error(`!! Not found page ->：[${name}] !!`)
       return
     }
 
-    this._currentPage = page
+    this.currentPage = page
 
     if (params) {
       const key = `${page.name}-params`
@@ -144,6 +150,20 @@ export default class Router {
   backHome(params = null) {
     return this.back(Number.MAX_SAFE_INTEGER, params)
   }
+
+  /**
+   * 获取指定的Page
+   * @param name
+   */
+  getPageFor(name) {
+    const [page] = this.pages.filter(item => item.name === name)
+    console.log(page)
+    return page
+  }
+
+
+
+  /******** Private ********/
 
 
   /**

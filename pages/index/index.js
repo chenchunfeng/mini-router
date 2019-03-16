@@ -9,7 +9,7 @@ Page({
 
 
   onLoad: function () {
-    console.log("onLoad")
+    console.log("onLoad", app.$router.currentPage)
   },
 
   onShow: function() {
@@ -58,6 +58,14 @@ Page({
       .success(res => {
         console.log("success: ", res)
       })
+  },
+
+  onShareAppMessage(options) {
+    console.log(options)
+    return {
+      title: "我的转发",
+      path: app.$router.getPageFor('login').url
+    }
   }
 
 })

@@ -4,3 +4,4 @@
 <button bind:tap="handleSwitchMine">选择到我的Tab页</button>
 <button bind:tap="handleReLaunchArticle">reLaunch 文章Tab页</button>
 <button bind:tap="handleRedirectLogin">redirect 登录页面</button>
+<button open-type='share'>转发</button>
