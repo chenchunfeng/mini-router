@@ -183,6 +183,45 @@ app.$router.push("mine")
     console.log("complete")
   })
 ```
+#### 9.query方式传参
+上面的都是通过params传参，传的参数缓存在了storage里，新增加的query类型传参，将参数拼接到了url后面:
+```js
+/**
+ * Query 方式传递参数
+ */
+handlePushLogsQuery() {
+  app.$router.push("logs", { log: "这是一个Log", name: "hellolad"}, 'query')
+},
+
+handlePushLoginQuery() {
+  app.$router
+    .push("login", { phoneNumber: "1561900000000" }, 'query')
+    .success(res => {
+      console.log("success: ", res)
+    })
+},
+
+handleReLaunchArticleQuery() {
+  app.$router.reLaunch("article", { articleId: '10002' }, 'query')
+    .success(res => {
+      console.log("success: ", res)
+    })
+},
+
+handleRedirectLoginQuery() {
+  app.$router.redirect("login", { phoneNumber: '1561900000000' }, 'query')
+    .success(res => {
+      console.log("success: ", res)
+    })
+},
+
+// 获取参数和普通的params传参获取参数一样:
+const { phoneNumber } = app.$router.params
+// 也可以在onLoad(options)里获取
+console.log("login options", options)
+// 生成的url类似：
+/pages/login/login?phoneNumber=1561900000000
+```
 
 > 寄语：对于前端来说，可以说初窥门径，想要更深入一步，还是要坚持不断的学习和看源码。mini-router可以实现小程序里路由的跳转，也将成为我下一个小程序使用的路由模块，如果有不足的地方欢迎题issuse，如果有好的想法，欢迎pull request。
 
