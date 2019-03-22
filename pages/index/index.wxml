@@ -5,3 +5,8 @@
 <button bind:tap="handleReLaunchArticle">reLaunch 文章Tab页</button>
 <button bind:tap="handleRedirectLogin">redirect 登录页面</button>
 <button open-type='share'>转发</button>
+
+<button bind:tap="handlePushLogsQuery">跳转到Logs Query</button>
+<button bind:tap="handlePushLoginQuery">跳转到Login页面 Query</button>
+<button bind:tap="handleReLaunchArticleQuery">reLaunch 文章Tab页 Query</button>
+<button bind:tap="handleRedirectLoginQuery">redirect 登录页面 Query</button>

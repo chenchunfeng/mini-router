@@ -26,7 +26,13 @@ export default class Router {
    */
   constructor() {
     this.pages = _getPages_()
+
+    // 当前页面携带的参数 (缓存在storage中)
     this.params = null
+
+    // 当前页面携带的参数 (在query中)
+    this.query = null
+
     this.currentPage = this.pages[0]
     if (!this.pages || !this.currentPage) {
       throw Error(` Error [pages.js not config]`)
@@ -57,7 +63,7 @@ export default class Router {
    * @param params
    * @returns {*}
    */
-  push(name, params = null) {
+  push(name, params = null, type = 'params') {
 
     const page = this.getPageFor(name)
 
@@ -69,11 +75,23 @@ export default class Router {
     this.currentPage = page
 
     if (params) {
-      const key = `${page.name}-params`
+      const key = `minirouter-${page.name}-params`
       wx.setStorageSync(key, params)
       this.params = this._getParams(key)
     } else {
       this.params = null
+    }
+
+    if (type === 'query') {
+      this.params = {}
+      page.url += "?"
+      for (let key in params) {
+        console.log("key: ", key)
+        page.url += `${key}=${params[key]}&`
+        this.params[key] = params[key]
+      }
+      page.url = page.url.slice(0, -1)
+      console.log("this.params", this.params)
     }
 
     const [, , obj] = Array.from(arguments)
@@ -100,8 +118,8 @@ export default class Router {
    * @param name
    * @param params
    */
-  reLaunch(name, params = null) {
-    return this.push(name, params, {fn: symbol.reLaunch})
+  reLaunch(name, params = null, type = 'params') {
+    return this.push(name, params, {fn: symbol.reLaunch}, type)
   }
 
   /**
@@ -109,8 +127,8 @@ export default class Router {
    * @param name
    * @param params
    */
-  redirect(name, params = null) {
-    return this.push(name, params, {fn: symbol.redirect})
+  redirect(name, params = null, type = 'params') {
+    return this.push(name, params, {fn: symbol.redirect}, type)
   }
 
   /**
@@ -129,7 +147,7 @@ export default class Router {
    */
   back(delta = 1, params = null) {
     if (params) {
-      const key = `${this._currentPage.name}-params`
+      const key = `minirouter-${this._currentPage.name}-params`
       wx.setStorageSync(key, params)
       this.params = this._getParams(key)
     } else {
@@ -157,7 +175,6 @@ export default class Router {
    */
   getPageFor(name) {
     const [page] = this.pages.filter(item => item.name === name)
-    console.log(page)
     return page
   }
 

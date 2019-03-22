@@ -6,10 +6,8 @@ Page({
   data: {
   },
 
-
-
   onLoad: function () {
-    console.log("onLoad", app.$router.currentPage)
+    // console.log("onLoad", app.$router.currentPage)
   },
 
   onShow: function() {
@@ -61,11 +59,44 @@ Page({
   },
 
   onShareAppMessage(options) {
-    console.log(options)
+    // console.log(options)
+    wx.showShareMenu({
+      withShareTicket: true
+    })
     return {
       title: "我的转发",
       path: app.$router.getPageFor('login').url
     }
-  }
+  },
+
+
+  /**
+   * Query 方式传递参数
+   */
+  handlePushLogsQuery() {
+    app.$router.push("logs", { log: "这是一个Log", name: "hellolad"}, 'query')
+  },
+
+  handlePushLoginQuery() {
+    app.$router
+      .push("login", { phoneNumber: "1561900000000" }, 'query')
+      .success(res => {
+        console.log("success: ", res)
+      })
+  },
+
+  handleReLaunchArticleQuery() {
+    app.$router.reLaunch("article", { articleId: '10002' }, 'query')
+      .success(res => {
+        console.log("success: ", res)
+      })
+  },
+
+  handleRedirectLoginQuery() {
+    app.$router.redirect("login", { phoneNumber: '1561900000000' }, 'query')
+      .success(res => {
+        console.log("success: ", res)
+      })
+  },
 
 })

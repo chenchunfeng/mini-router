@@ -15,11 +15,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log("login options", options)
     const { phoneNumber } = app.$router.params
     this.setData({
       phoneNumber
     })
-    console.log("onLoad", app.$router.currentPage)
+    console.log("login onLoad", app.$router.currentPage)
   },
 
   handleBackParams() {
