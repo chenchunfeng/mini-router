@@ -18,6 +18,8 @@ Page({
     this.setData({
       logContent: app.$router.params.log
     })
+    console.log("logs ", app.$router.getPageFor("logs"))
+    console.log("logs ", this.route)
   },
 
   handleNextPage() {

@@ -8,6 +8,7 @@ Page({
 
   onLoad: function () {
     // console.log("onLoad", app.$router.currentPage)
+    console.log("this", this)
   },
 
   onShow: function() {

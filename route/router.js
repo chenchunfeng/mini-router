@@ -30,8 +30,8 @@ export default class Router {
     // 当前页面携带的参数 (缓存在storage中)
     this.params = null
 
-    // 当前页面携带的参数 (在query中)
-    this.query = null
+    // 所有的keys
+    this.storageKeys = []
 
     this.currentPage = this.pages[0]
     if (!this.pages || !this.currentPage) {
@@ -74,24 +74,22 @@ export default class Router {
 
     this.currentPage = page
 
-    if (params) {
+    if (params && type === "params") {
       const key = `minirouter-${page.name}-params`
+      this.storageKeys.push(key)
       wx.setStorageSync(key, params)
       this.params = this._getParams(key)
     } else {
       this.params = null
     }
 
+    let pageUrl = page.url.slice()
     if (type === 'query') {
-      this.params = {}
-      page.url += "?"
+      pageUrl += "?"
       for (let key in params) {
-        console.log("key: ", key)
-        page.url += `${key}=${params[key]}&`
-        this.params[key] = params[key]
+        pageUrl += `${key}=${params[key]}&`
       }
-      page.url = page.url.slice(0, -1)
-      console.log("this.params", this.params)
+      pageUrl.substring(pageUrl.length-1, 0)
     }
 
     const [, , obj] = Array.from(arguments)
@@ -107,7 +105,7 @@ export default class Router {
       f = wx.switchTab
     }
     f({
-      url: page.url,
+      url: type === 'params' ? page.url : pageUrl,
       ...that._getFunc()
     })
     return this
@@ -119,7 +117,7 @@ export default class Router {
    * @param params
    */
   reLaunch(name, params = null, type = 'params') {
-    return this.push(name, params, {fn: symbol.reLaunch}, type)
+    return this.push(name, params, { fn: symbol.reLaunch }, type)
   }
 
   /**
@@ -128,7 +126,7 @@ export default class Router {
    * @param params
    */
   redirect(name, params = null, type = 'params') {
-    return this.push(name, params, {fn: symbol.redirect}, type)
+    return this.push(name, params, { fn: symbol.redirect }, type)
   }
 
   /**
@@ -137,7 +135,7 @@ export default class Router {
    * @returns {*}
    */
   switchTab(name) {
-    return this.push(name, null, {fn: symbol.switchTab})
+    return this.push(name, null, { fn: symbol.switchTab })
   }
 
   /**
@@ -166,7 +164,7 @@ export default class Router {
    * @param params
    */
   backHome(params = null) {
-    return this.back(Number.MAX_SAFE_INTEGER, params)
+    return this.back(100, params)
   }
 
   /**
