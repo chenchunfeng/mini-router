@@ -65,7 +65,7 @@ export default class Router {
    */
   push(name, params = null, type = 'params') {
 
-    const page = this.getPageFor(name)
+    const page = JSON.parse(JSON.stringify(this.getPageFor(name)))
 
     if (!page) {
       throw Error(`!! Not found page ->：[${name}] !!`)
@@ -74,7 +74,7 @@ export default class Router {
 
     this.currentPage = page
 
-    if (params && type === "params") {
+    if (params) {
       const key = `minirouter-${page.name}-params`
       this.storageKeys.push(key)
       wx.setStorageSync(key, params)
@@ -83,13 +83,15 @@ export default class Router {
       this.params = null
     }
 
-    let pageUrl = page.url.slice()
     if (type === 'query') {
-      pageUrl += "?"
+      this.params = {}
+      page.url += "?"
+      debugger
       for (let key in params) {
-        pageUrl += `${key}=${params[key]}&`
+        page.url += `${key}=${params[key]}&`
+        this.params[key] = params[key]
       }
-      pageUrl.substring(pageUrl.length-1, 0)
+      page.url = page.url.slice(0, -1)
     }
 
     const [, , obj] = Array.from(arguments)
@@ -105,7 +107,7 @@ export default class Router {
       f = wx.switchTab
     }
     f({
-      url: type === 'params' ? page.url : pageUrl,
+      url: page.url,
       ...that._getFunc()
     })
     return this
@@ -144,13 +146,15 @@ export default class Router {
    * @param params
    */
   back(delta = 1, params = null) {
+    debugger
     if (params) {
-      const key = `minirouter-${this._currentPage.name}-params`
+      const key = `minirouter-${this.currentPage.name}-params`
       wx.setStorageSync(key, params)
       this.params = this._getParams(key)
     } else {
       this.params = null
     }
+    console.log("delta, ", delta)
     wx.navigateBack({
       delta,
       ...this._getFunc()
@@ -164,6 +168,7 @@ export default class Router {
    * @param params
    */
   backHome(params = null) {
+    debugger
     return this.back(100, params)
   }
 
